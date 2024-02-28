@@ -1,11 +1,10 @@
 <div class="container card rounded border border-success mt-4 col-sm-4">
 
-
     @if (session('success'))
         <span class="alert alert-primary mb-3" role="alert"> {{ session('success') }} </span>
     @endif
 
-    <form wire:submit="createNewUser" action="">
+    <form wire:submit="createNewUser"  enctype="multipart/form-data" action="">
 
         <div class="mb-3">
             <label for="name" class="form-label">Nome</label>
@@ -34,30 +33,31 @@
             @enderror
         </div>
 
-            <!-- Outros campos do formulário -->
-
-    <div class="mb-3">
-        <label for="image" class="form-label">Escolha uma imagem</label>
-        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" wire:model="image">
-        @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
-    </div>
-
-    <!-- Se a imagem foi carregada, mostra uma pré-visualização -->
-    @if ($image)
         <div class="mb-3">
-            <label class="form-label">Pré-visualização da Imagem</label>
-            <img src="{{ $image->temporaryUrl() }}" class="img-fluid">
+            <label for="image" class="form-label">Escolha uma imagem</label>
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image"
+                wire:model.lazy="image">
+            @error('image')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-    @endif
-    
+
+        <!-- Se a imagem foi carregada, mostra uma pré-visualização -->
+        @if ($image)
+            <div class="mb-3">
+                <label class="form-label">Pré-visualização da Imagem</label>
+                <img src="{{ $image->temporaryUrl() }}" class="img-fluid">
+            </div>
+        @endif
+
         <button class="form-control btn btn-success">Criar</button>
 
     </form>
 
-    @foreach ($users as $user)
+    {{-- @foreach ($users as $user)
         <h3> {{ $user->name }} </h3>
     @endforeach
 
-    {{ $users->links() }}
+    {{ $users->links() }} --}}
 
 </div>

@@ -1,12 +1,12 @@
 <div class="container card rounded border border-success mt-4 col-sm-4">
 
-
     @if (session('success'))
         <span class="alert alert-primary mb-3" role="alert"> {{ session('success') }} </span>
     @endif
 
-    <form wire:submit="createNewUser" action="">
 
+    <form class="mt-4" wire:submit="createNewUser" action="">
+        <h2>CRIAR NOVA CONTA</h2>
         <div class="mb-3">
             <label for="name" class="form-label">Nome</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
@@ -34,23 +34,8 @@
             @enderror
         </div>
 
-            <!-- Outros campos do formulário -->
-
-    <div class="mb-3">
-        <label for="image" class="form-label">Escolha uma imagem</label>
-        <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" wire:model="image">
-        @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
-    </div>
-
-    <!-- Se a imagem foi carregada, mostra uma pré-visualização -->
-    @if ($image)
-        <div class="mb-3">
-            <label class="form-label">Pré-visualização da Imagem</label>
-            <img src="{{ $image->temporaryUrl() }}" class="img-fluid">
-        </div>
-    @endif
-    
         <button class="form-control btn btn-success">Criar</button>
+
 
     </form>
 

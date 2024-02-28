@@ -3,13 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
-class Clicker extends Component
+class RegisterForm extends Component
 {
     use WithPagination, WithFileUploads;
 
@@ -19,20 +18,22 @@ class Clicker extends Component
     public $email = '';
     #[Rule('required|string|min:8')]
     public $password = '';
-    #[Rule('required|image|mimes:jpeg,png,jpg,gif,svg|max:2048')]
-    public $image = '';
+    #[Rule('required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|sometimes')]
+    public $image;
+    
 
     public function createNewUser() {
 
         $validated =  $this->validate();
 
-        User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password'])
-        ]);
+        if($this->image)
+        {
+           $validated['image'] = $this->image->store('uploads','public');
+        }
 
-        $this->reset(['name', 'email', 'password']);
+        User::create($validated);
+
+        $this->reset(['name', 'email', 'password','image']);
 
        session()->flash('success', 'Usuario cadastrado com successo');
     }
@@ -41,7 +42,7 @@ class Clicker extends Component
     {
         $users = User::paginate(5);
 
-        return view('livewire.clicker',[
+        return view('livewire.register-form',[
             'users' => $users
         ]);
     }

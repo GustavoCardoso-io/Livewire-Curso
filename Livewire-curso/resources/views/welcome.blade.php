@@ -139,6 +139,6 @@
             </div>
         </div> --}}
 
-        @livewire('clicker')
+        @livewire('register-form')
     </body>
 </html>
